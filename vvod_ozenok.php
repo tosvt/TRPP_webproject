@@ -1,22 +1,11 @@
-<?php session_start(); include "functions.php"; include "connect.php";
-function getGrpByLogin($login){
-       $mysqli = connectDB();
-    $result = $mysqli->query("SELECT grp FROM users WHERE login = '$login'");
-    $row = $result->fetch_assoc();
-    return $row['grp'];
-        closeDB($mysqli);
-    }
-$grp = getGrpByLogin($_SESSION['login']);
-
-function getFioOnLogin($login){
-       $mysqli = connectDB();
-    $result = $mysqli->query("SELECT name FROM users WHERE login = '$login'");
-    $row = $result->fetch_assoc();
-    return $row['name'];
-        closeDB($mysqli);
-    }
-$name = getFioOnLogin($_SESSION['login']);
-$show = getALlProjects($row, $_GET['id']);
+<?php session_start(); require_once 'connect.php'; 
+$login = $_SESSION['login'];
+$grpandname = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login'");
+while($user = mysqli_fetch_assoc($grpandname)) {
+    $name = $user['name']; 
+    $grp = $user['grp'];
+    $id = $user['id']; 
+}
    ?>
 <!DOCTYPE html>
 <html>
@@ -32,22 +21,23 @@ $show = getALlProjects($row, $_GET['id']);
         <section>
             <h1>Выставление оценок:</h1>
             <?php 
-                 $mysqli = new mysqli("localhost", "root", "", "bd_ib");
-                for($i = 0; $i<count($show); $i++) {
-                    echo '<div class="works"><fieldset>
-                           <legend>#'.$show[$i]["id"].'</legend>
-                           <p><b>Автор: </b>'.$show[$i]["name"].'</p>
-                           <p><b>Название: </b>'.$show[$i]["title"].'</p>
-                           <p><b>Описание: </b>'.$show[$i]["decription"].'</p>
-                           <p align="right"><a href="/vvod_ozenki.php?id='.$show[$i]["id"].'"><i>Выставить оценку</i></a></p>
-                        </fieldset></div>' ;
-                }
-                closeDB($mysqli);
+            $allworksbyid = mysqli_query($connect, "SELECT * FROM `works` WHERE `id` = '$id'");
+            $allworks = mysqli_query($connect, "SELECT * FROM `works`");
+            while($works = mysqli_fetch_assoc($allworks)) { 
+            echo '<div class="works">
+                        <fieldset>
+                            <legend>#'.$works['id'].'</legend>
+                            <p><b>Автор: </b>'.$works["name"].'</p>
+                            <p><b>Название: </b>'.$works["title"].'</p>
+                            <p><b>Описание: </b>'.$works["description"].'</p>
+                            <p align="right"><a href="/vvod_ozenki.php?id='.$works["id"].'"><i>Выставить оценку</i></a></p>
+                        </fieldset></div>';
+            }
             ?>
          
         </section>
        
     </main>
-    <footer> &copy; 2021 Открытй конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
+    <footer> &copy; 2021 Открытый конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
 </body>
 </html>

@@ -1,22 +1,18 @@
-<?php
-
-session_start(); include "functions.php";
-	$login = $_POST['login'];
+<?php session_start(); require_once 'connect.php';
+    $login = $_POST['login'];
     $password = md5($_POST['password']);
 
     if(isset($_POST['button_login'])){
-    if(checkUser($login, $password)){
-    	if(isset($_POST['remember'])) { setcookie("user", $password, strtotime('+30 days'), '/'); $_SESSION['USER_COOKIE_IN'] = 1;}
-    	else {
-        $_SESSION['login'] = $login;
-        $_SESSION['password'] = $password;
-        $_SESSION['USER_LOGIN_IN'] = 1;
-		header("Location: index.php");
-	}
+    $psw = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
+        if(mysqli_num_rows($psw) > 0){
+            $_SESSION['login'] = $login;
+            $_SESSION['password'] = $password;
+            $_SESSION['USER_LOGIN_IN'] = 1;
+            header("Location: index.php");
+        } else {
+            echo '<div class="caution">Ошибка авторизации! Попробуйте снова.</div>';
+        }   
     }
-    else echo '<div class="caution">Ошибка авторизации! Попробуйте снова.</div>';
-
-}
 
 ?>
 <!DOCTYPE html>

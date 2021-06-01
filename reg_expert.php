@@ -1,4 +1,4 @@
-<?php include "functions.php"; include "connect.php";
+<?php session_start(); require_once "connect.php";
 if(isset($_POST['button_reg'])) {
   $login = htmlspecialchars($_POST['login']);
   $password = htmlspecialchars($_POST['password']);
@@ -32,7 +32,14 @@ if(isset($_POST['button_reg'])) {
  
   }
   if(!$bad) {
-  regExpertUser($name, $login, $password, $repassword, $grp);
+    $password = md5($password);
+    $repassword = md5($repassword);
+    $reg = mysqli_query($connect, "INSERT INTO users (`name`,`login`, `password`,`repassword`, `grp`) VALUES ('$name', '$login', '$password', '$repassword', '$grp')");   
+    $grp = 2;
+    $_SESSION['reg_success'] = 1;
+    $_SESSION['login'] = $login;
+    $_SESSION['password'] = $password;
+    header("Location: index.php");
   }
 }
 
@@ -68,6 +75,6 @@ if(isset($_POST['button_reg'])) {
   ?>
         </section>
     </main>
-    <footer> &copy; 2021 Открытй конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
+    <footer> &copy; 2021 Открытый конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
 </body>
 </html>

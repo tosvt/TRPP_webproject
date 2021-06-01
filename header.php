@@ -3,8 +3,8 @@
            <img src="img/logo_burned.png" alt="">
        </div>
        <div class="headertext">
-       <p>Открытый конкурс <br>Интернет-проектов</p>
-       <span class="headerinfo">Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</span>
+           <p>Открытый конкурс <br>Интернет-проектов</p>
+           <span class="headerinfo">Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</span>
        </div>
 </header>
         <nav>

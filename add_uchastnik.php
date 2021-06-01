@@ -1,31 +1,11 @@
-<?php session_start(); include "functions.php"; include "connect.php";
-/** @var
- * $login
- * Добавление участника
- */
+<?php session_start(); require_once 'connect.php';
 $login = $_SESSION['login'];
-
-$grp = 2;
-/** функция для получения id пользователя при авторизации */
-function getIDOnLogin($login){
-	$mysqli = connectDB();
-	$result = $mysqli->query("SELECT id FROM users WHERE login = '$login'");
-	$row = $result->fetch_assoc();
-	return $row['id'];
-	closeDB($mysqli);
-	}
-
-	$lo = getIDOnLogin($_SESSION['login']);
-/** функция получения фио пользователя при авторизации */
-function getFioOnLogin($login){
-    $mysqli = connectDB();
-	$result = $mysqli->query("SELECT name FROM users WHERE login = '$login'");
-	$row = $result->fetch_assoc();
-	return $row['name'];
-        closeDB($mysqli);
-    }
-    $name = getFioOnLogin($_SESSION['login']);
-   
+$grpandname = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login'");
+while($user = mysqli_fetch_assoc($grpandname)) {
+    $name = $user['name']; 
+    $grp = $user['grp'];
+    $id = $user['id']; 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,8 +18,7 @@ function getFioOnLogin($login){
 	 <main>
         <?php include "header.php";?>
         <section class="sectionaddwork">
-        	<?php
-            /** Добавление нового проекта участником */
+        	<?php 
         	if( $_SESSION['USER_LOGIN_IN'] == 1 || $_COOKIE['user']){
         		echo '<h1>Добавление проекта</h1>
 				<form action="" method="post" class="addnewwork">
@@ -51,20 +30,12 @@ function getFioOnLogin($login){
         		
         		$title = $_POST['title'];
         		$text = $_POST['text'];
-        	   $name = getFioOnLogin($_SESSION['login']);
-	if(isset($_POST['btn_send'])) {
-		 $mysqli = new mysqli("localhost", "root", "", "bd_ib");
-    
-		$mysqli->query("INSERT INTO `raboti` (`name`, `title`, `decription`, `id_login`) VALUES ('$name','$title', '$text', '$lo')");
-    		
-   			$mysqli->close();
-
-   			echo "Ваш проект успешно добавлен";
-   			
-		}
-	}else echo "Не удалось добавить проект! Повторите позднее."; 
-	
-            
+				if(isset($_POST['btn_send'])) {
+					$addwork = mysqli_query($connect, "INSERT INTO `works` (`name`, `title`, `description`, `id_login`) VALUES ('$name','$title', '$text', '$id')");
+              
+					echo "Ваш проект успешно добавлен";	
+				}
+			} else echo "Не удалось добавить проект! Повторите позднее.";   
 			?>
         </section>
        

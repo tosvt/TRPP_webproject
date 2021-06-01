@@ -1,6 +1,4 @@
-<?php session_start();
- include "functions.php"; include "connect.php";
-
+<?php session_start(); require_once "connect.php";
 if(isset($_POST['button_reg'])) {
   $login = htmlspecialchars($_POST['login']);
   $password = htmlspecialchars($_POST['password']);
@@ -40,16 +38,7 @@ if(isset($_POST['button_reg'])) {
 <body>
     <main>
    <?php include "header.php";?>
-        
             <h1>Регистрация на сайте:</h1>
-	
-    <!-- <input type="radio" value="experts" name="experts"> Эксперт<br>
-    <input type="radio" value="uchastniki" name="uchastniki"> Участник<br>
-    <input type="submit" value="btn" name="btn">
-	<select name="selected">
-      <option value="f"> Эксперт</option>
-      <option value="f"> Участник</option>
-  </select> -->
    <section>
     <div class="block">
     <span>Новый эксперт</span>
@@ -61,6 +50,6 @@ if(isset($_POST['button_reg'])) {
 </div>
  </section>      
     </main>
-    <footer> &copy; 2021 Открытй конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
+    <footer> &copy; 2021 Открытый конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
 </body>
 </html>

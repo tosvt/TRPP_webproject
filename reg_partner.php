@@ -1,6 +1,4 @@
-<?php session_start();
-include "functions.php";
-include "connect.php";
+<?php session_start(); require_once "connect.php";
 if(isset($_POST['button_reg'])) {
   $login = htmlspecialchars($_POST['login']);
   $password = htmlspecialchars($_POST['password']);
@@ -34,7 +32,14 @@ if(isset($_POST['button_reg'])) {
  
   }
   if(!$bad) {
-  regPartnerUser($name, $login, $password, $repassword, $grp);
+    $password = md5($password);
+    $repassword = md5($repassword);
+    $reg = mysqli_query($connect, "INSERT INTO users (`name`,`login`, `password`,`repassword`, `grp`) VALUES ('$name', '$login', '$password', '$repassword', '$grp')");   
+    $grp = 2;
+    $_SESSION['reg_success'] = 1;
+    $_SESSION['login'] = $login;
+    $_SESSION['password'] = $password;
+    header("Location: index.php");
   }
 
 }
@@ -62,7 +67,6 @@ if(isset($_POST['button_reg'])) {
 		 <input type="text" name="login" required placeholder="Логин:"> <Br>
 		 <input type="password" name="password" required placeholder="Пароль:"> <Br>
      <input type="password" name="repassword" required placeholder="Повторите пароль:"> <Br>
-     
 		 <input name="button_reg" class="btn" type="submit" value="Регистрация">
   </form>
 </div>
@@ -71,10 +75,9 @@ if(isset($_POST['button_reg'])) {
   if($_SESSION['error_password'] == 1) echo $error_password;
   if($_SESSION['error_repeat_password'] == 1) echo $error_repeat_password;
   if($_SESSION['name_repeat'] == 1) echo $error_name;
-//else echo '<div class="error" style="display:none;"></div>';
 ?>        </section>
        
     </main>
-    <footer>Copyright Свят Золотухин ПКС-42</footer>
+    <footer> &copy; 2021 Открытый конкурс Интернет-проектов <br> Разработка сайта: Золотухин С.А., Коротыч Г.Д., Шелюхин В.П.</footer>
 </body>
 </html>

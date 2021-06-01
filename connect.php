@@ -1,7 +1,7 @@
 <?php
-	//$host = '127.0.0.1'; //хост
-	$host = 'localhost';
-	$db = 'bd_ib'; //имя БД
-	$user = 'root'; //имя пользователя 
-	$password = ''; //пароль пользователя
-	?>
+	$connect = mysqli_connect('mardiadb', 'test_user', 'test_pass', 'testdb');
+	mysqli_set_charset($connect, "utf8");
+	if(!$connect) {
+		echo 'Error connect to DB';
+	}
+?>
